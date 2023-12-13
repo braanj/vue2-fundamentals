@@ -1,6 +1,6 @@
 # HomeView Component Documentation
 
-The `HomeView` component is a Vue.js 2 component that represents the home page of a website. It includes sections for general page content and a list of planets. Below is the documentation for the `HomeView` component.
+The `HomeView` component is a Vue.js 2 component that represents the home page of a website. It includes sections for general page content and a list of posts. Below is the documentation for the `HomeView` component.
 
 ## Template
 
@@ -15,8 +15,8 @@ The `HomeView` component is a Vue.js 2 component that represents the home page o
     </page-section-container>
 
     <PageSectionContainer>
-      <h2>Planets</h2>
-      <PlanetList :planets="planets" />
+      <h2>Posts</h2>
+      <PostsList :posts="posts" />
     </PageSectionContainer>
   </div>
 </template>
@@ -24,7 +24,7 @@ The `HomeView` component is a Vue.js 2 component that represents the home page o
 
 - **Page Content Section:** The component includes two `page-section-container` elements, each containing a title and content.
 - **Page Title and Description:** Displays the `pageTitle` and `pageDescription` properties.
-- **Planets Section:** Displays a list of planets using the `PlanetList` component.
+- **Posts Section:** Displays a list of posts using the `PostsList` component.
 
 ## Script
 
@@ -32,34 +32,34 @@ The `HomeView` component is a Vue.js 2 component that represents the home page o
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import PageSectionContainer from "@/components/PageSectionContainer.vue";
-import PlanetList from "@/components/PlanetsList.vue";
-import { Planet } from "@/types/Planet";
+import PostsList from "@/components/PostsList.vue";
+import { Post } from "@/types/Post";
 
 @Component({
   components: {
     PageSectionContainer,
-    PlanetList,
+    PostsList,
   },
 })
 export default class HomeView extends Vue {
-  planets: Planet[] = [];
+  posts: Post[] = [];
   pageTitle = "Page title";
   pageDescription =
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam aperiam sint doloribus facilis sit omnis eaque, nam fuga suscipit, necessitatibus exercitationem? Quia quae minus nihil non, natus unde omnis perferendis.";
 
   async mounted() {
     const { handler } = await import("../dataLayer/route");
-    this.planets = await handler("/planets");
+    this.posts = await handler("/posts");
   }
 }
 </script>
 ```
 
-- **Import Statements:** Import necessary dependencies and components (`PageSectionContainer` and `PlanetList`).
+- **Import Statements:** Import necessary dependencies and components (`PageSectionContainer` and `PostsList`).
 - **Component Configuration:** Decorate the component with the `@Component` decorator.
 - **Component Logic:** Define the `HomeView` class extending from `Vue`.
-- **Data Properties:** Define the `planets`, `pageTitle`, and `pageDescription` properties.
-- **Mounted Hook:** Use the `mounted` lifecycle hook to fetch planets data asynchronously when the component is mounted.
+- **Data Properties:** Define the `posts`, `pageTitle`, and `pageDescription` properties.
+- **Mounted Hook:** Use the `mounted` lifecycle hook to fetch posts data asynchronously when the component is mounted.
 
 ## Styles
 
@@ -67,4 +67,4 @@ export default class HomeView extends Vue {
 
 ## Conclusion
 
-The `HomeView` component serves as the home page of the application, displaying general content and a list of planets. It utilizes other Vue components (`PageSectionContainer` and `PlanetList`) for a modular and organized structure. The asynchronous fetching of planet data ensures dynamic content on the home page.
+The `HomeView` component serves as the home page of the application, displaying general content and a list of posts. It utilizes other Vue components (`PageSectionContainer` and `PostsList`) for a modular and organized structure. The asynchronous fetching of post data ensures dynamic content on the home page.

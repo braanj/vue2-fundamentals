@@ -1,25 +1,28 @@
 <template>
   <!-- Home view template -->
-  <div class="home">
+  <div class="posts">
     <!-- First page section container with a title and description -->
-    <page-section-container>
-      <h1>{{ pageTitle }}</h1>
-      <p>
-        {{ pageDescription }}
-      </p>
+    <page-section-container class="posts-header">
+      <div>
+        <h1 class="page-title">
+          {{ pageTitle }} <small>({{ posts.length }})</small>
+        </h1>
+        <p>
+          {{ pageDescription }}
+        </p>
+      </div>
+      <LocalSearch v-model="query" />
     </page-section-container>
 
     <!-- Second page section container for displaying a list of posts -->
     <PageSectionContainer>
-      <h2>Posts</h2>
       <PostsList :posts="posts" />
-      <router-link class="button-more" to="/posts">Discover more</router-link>
     </PageSectionContainer>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Watch } from "vue-property-decorator";
 import PageSectionContainer from "@/components/PageSectionContainer.vue";
 import PostsList from "@/components/PostsList.vue";
 import { Post } from "@/types/Post";
@@ -28,14 +31,17 @@ import { Post } from "@/types/Post";
   components: {
     PageSectionContainer,
     PostsList,
+    LocalSearch: () => import("../components/LocalSearch.vue"),
   },
 })
 export default class HomeView extends Vue {
   // Array to store the list of posts
   posts: Post[] = [];
 
+  query = "";
+
   // Title for the home page
-  pageTitle = "Page title";
+  pageTitle = "Posts";
 
   // Description for the home page
   pageDescription =
@@ -46,30 +52,57 @@ export default class HomeView extends Vue {
    * This hook is called after the component has been added to the DOM.
    * It fetches the list of posts using the dataLayer handler and updates the component state.
    */
+  @Watch("query")
+  async search() {
+    const { handler } = await import("../dataLayer/route");
+
+    this.posts = (await handler("/posts")).filter((post: Post) => {
+      return post.title.includes(this.query) || post.body.includes(this.query);
+    });
+  }
+
   async mounted() {
     // Dynamically import the route handler from the dataLayer.
     const { handler } = await import("../dataLayer/route");
 
     // Fetch the list of posts from the dataLayer.
-    this.posts = (await handler("/posts")).slice(0, 4);
+    this.posts = await handler("/posts");
+
+    let routeQuery = this.$route?.query;
+
+    if (routeQuery.q) {
+      const q = (routeQuery.q as string).replaceAll("-", " ");
+      this.posts = this.posts.filter((post: Post) => {
+        return post.title.includes(q) || post.body.includes(q);
+      });
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
-.button-more {
-  display: block;
-  padding: 0.75rem 1rem;
-  background-color: #e8e7e7;
-  margin-top: 2rem;
-  text-align: center;
-  text-decoration: none;
-  color: #000000;
-  border-radius: 5px;
-  transition: all 225ms ease-in-out;
-  &:hover {
-    background-color: invert($color: #e8e7e7);
-    color: invert($color: #000000);
+.posts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 50px;
+
+  @media screen and (max-width: 599px) {
+    display: block;
+  }
+
+  .page-title {
+    small {
+      font-weight: 500;
+      color: #aeaeae;
+    }
+  }
+
+  .search-container {
+    min-width: 25%;
+    @media screen and (max-width: 599px) {
+      margin-top: 2rem;
+    }
   }
 }
 </style>

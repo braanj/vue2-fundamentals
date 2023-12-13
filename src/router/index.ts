@@ -19,11 +19,18 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
   },
   {
-    path: "/planets/:slug",
-    name: "planet",
-    // Lazy-loaded route for the SinglePlanetView
+    path: "/posts",
+    name: "posts",
+    // Lazy-loaded route for the SinglePostView
     component: () =>
-      import(/* webpackChunkName: "planet" */ "../views/SinglePlanet.vue"),
+      import(/* webpackChunkName: "post" */ "../views/Posts.vue"),
+  },
+  {
+    path: "/posts/:slug",
+    name: "post",
+    // Lazy-loaded route for the SinglePostView
+    component: () =>
+      import(/* webpackChunkName: "post" */ "../views/SinglePost.vue"),
   },
 ];
 

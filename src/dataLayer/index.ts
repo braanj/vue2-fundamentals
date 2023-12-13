@@ -1,7 +1,9 @@
+import { Post } from "@/types/Post";
+
 /**
  * Base URL for the API. It represents the root URL of the Nuxt.js API.
  */
-const baseUrl = "https://api.nuxtjs.dev";
+const baseUrl = "https://jsonplaceholder.typicode.com";
 
 /**
  * Fetcher function for making asynchronous requests to the API.
@@ -20,7 +22,12 @@ export const fetcher = async (route: string) => {
   // Check if the response status is OK (2xx).
   if (response.ok) {
     // If successful, parse and return the JSON response.
-    return await response.json();
+    const posts = (await response.json()).map((post: Post) => ({
+      ...post,
+      imageUrl: `https://picsum.photos/id/${post.id}/500/300`,
+    }));
+
+    return posts;
   }
   // If the response status is not OK, the Promise is rejected.
 };

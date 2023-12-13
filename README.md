@@ -55,9 +55,9 @@ The project structure follows common Vue.js conventions:
 
 ## Features
 
-- **Home Page:** Displays general information about the project and a list of planets.
+- **Home Page:** Displays general information about the project and a list of posts.
 
-- **Planet Details Page:** Allows users to click on a planet to view detailed information about that specific planet.
+- **Post Details Page:** Allows users to click on a post to view detailed information about that specific post.
 
 ## Dependencies
 
