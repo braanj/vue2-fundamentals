@@ -1,14 +1,14 @@
-# PlanetItem Component Documentation
+# PostItem Component Documentation
 
 ## Overview
 
-The `PlanetItem` component is a Vue.js 2 component designed to represent an individual planet item. It provides flexibility for rendering either a `div` or a `button` based on the `singlePage` prop, allowing it to be used in various contexts such as a list or a detailed view. The component displays information about a planet, including an image, title, description, and additional details like distance from the Sun, radius, and last update time.
+The `PostItem` component is a Vue.js 2 component designed to represent an individual post item. It provides flexibility for rendering either a `div` or a `button` based on the `singlePage` prop, allowing it to be used in various contexts such as a list or a detailed view. The component displays information about a post, including an image, title, description, and additional details like distance from the Sun, radius, and last update time.
 
 ## Usage
 
 ### Installation
 
-Ensure that the `Vue` framework and any necessary dependencies are installed in your project before using the `PlanetItem` component.
+Ensure that the `Vue` framework and any necessary dependencies are installed in your project before using the `PostItem` component.
 
 ```bash
 npm install vue
@@ -16,23 +16,23 @@ npm install vue
 
 ### Component Integration
 
-Import and use the `PlanetItem` component in the parent component or file where you want to display planet information.
+Import and use the `PostItem` component in the parent component or file where you want to display post information.
 
 ```vue
 <template>
   <div>
     <!-- Other components or content -->
-    <PlanetItem :planet="planetData" :singlePage="true" />
+    <PostItem :post="planetData" :singlePage="true" />
   </div>
 </template>
 
 <script>
-import PlanetItem from "@/path-to-components/PlanetItem.vue";
+import PostItem from "@/path-to-components/PostItem.vue";
 import { planetData } from "@/path-to-data/planetData";
 
 export default {
   components: {
-    PlanetItem,
+    PostItem,
   },
   data() {
     return {
@@ -45,10 +45,10 @@ export default {
 
 ## Props
 
-### `planet` (Required)
+### `post` (Required)
 
-- **Type:** Object (Planet)
-- **Description:** An object representing the details of a planet.
+- **Type:** Object (Post)
+- **Description:** An object representing the details of a post.
 
 ### `singlePage` (Optional, Default: `false`)
 
@@ -64,7 +64,7 @@ export default {
   <component
     :is="singlePage ? 'div' : 'button'"
     @click="singlePage ? '' : path ? navigateTo(path) : ''"
-    class="planets-list__item"
+    class="posts-list__item"
   >
     <img :src="imageUrl" alt="" />
     <h3>{{ title }}</h3>
@@ -81,20 +81,20 @@ export default {
 ```
 
 - **Dynamic Component:** Uses the `component` element to dynamically render either a `div` or a `button` based on the value of the `singlePage` prop.
-- **Image:** Displays the planet's image.
-- **Title and Description:** Displays the planet's title and a truncated description for non-single-page views.
+- **Image:** Displays the post's image.
+- **Title and Description:** Displays the post's title and a truncated description for non-single-page views.
 - **Info Section:** Displays additional information such as distance from the Sun, radius, and last update time.
 
 ### Script
 
 ```vue
 <script lang="ts">
-import { Planet } from "@/types/Planet";
+import { Post } from "@/types/Post";
 import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component
-export default class PlanetItem extends Vue {
-  @Prop({ required: true, default: {} }) planet!: Planet;
+export default class PostItem extends Vue {
+  @Prop({ required: true, default: {} }) post!: Post;
   @Prop({ required: false, default: false }) singlePage!: boolean;
 
   // ... (getters and methods)
@@ -106,8 +106,8 @@ export default class PlanetItem extends Vue {
 </script>
 ```
 
-- **Import Statements:** Imports the necessary dependencies and the `Planet` type.
-- **Props:** Defines the `planet` and `singlePage` props.
+- **Import Statements:** Imports the necessary dependencies and the `Post` type.
+- **Props:** Defines the `post` and `singlePage` props.
 - **Getters:** Defines getters for various properties like `path`, `imageUrl`, `title`, etc.
 - **Methods:** Defines the `subString` method for truncating the description and the `navigateTo` method for navigating to a specified path.
 
@@ -120,7 +120,7 @@ export default class PlanetItem extends Vue {
   flex-direction: column;
 }
 
-.planets-list__item {
+.posts-list__item {
   border: 1px solid #aeaeae;
 
   img {

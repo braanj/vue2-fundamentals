@@ -1,14 +1,14 @@
-# PlanetList Component Documentation
+# PostsList Component Documentation
 
 ## Overview
 
-The `PlanetList` component is a Vue.js 2 component designed to display a list of planets. It utilizes the `PlanetItem` component to render individual planet items. The component is responsive, displaying planets in a grid layout with four columns and a 10-pixel gap between them.
+The `PostsList` component is a Vue.js 2 component designed to display a list of posts. It utilizes the `PostItem` component to render individual post items. The component is responsive, displaying posts in a grid layout with four columns and a 10-pixel gap between them.
 
 ## Usage
 
 ### Installation
 
-Ensure that the `Vue` framework and `vue-property-decorator` are installed in your project before using the `PlanetList` component.
+Ensure that the `Vue` framework and `vue-property-decorator` are installed in your project before using the `PostsList` component.
 
 ```bash
 npm install vue vue-property-decorator
@@ -16,26 +16,26 @@ npm install vue vue-property-decorator
 
 ### Component Integration
 
-Import and register the `PlanetList` component in the parent component or file where you want to use it.
+Import and register the `PostsList` component in the parent component or file where you want to use it.
 
 ```vue
 <template>
   <div>
     <!-- Other components or content -->
-    <PlanetList :planets="planetsData" />
+    <PostsList :posts="planetsData" />
   </div>
 </template>
 
 <script>
-import PlanetList from "@/path-to-components/PlanetList.vue";
+import PostsList from "@/path-to-components/PostsList.vue";
 
 export default {
   components: {
-    PlanetList,
+    PostsList,
   },
   data() {
     return {
-      planetsData: /* Your planet data array */,
+      planetsData: /* Your post data array */,
     };
   },
 };
@@ -44,10 +44,10 @@ export default {
 
 ## Props
 
-### `planets` (Required)
+### `posts` (Required)
 
 - **Type:** Array
-- **Description:** An array of objects representing planets. Each object should have properties representing the planet details.
+- **Description:** An array of objects representing posts. Each object should have properties representing the post details.
 
 ### Example
 
@@ -57,7 +57,7 @@ data() {
     planetsData: [
       { name: 'Earth', diameter: '12,742 km' },
       { name: 'Mars', diameter: '6,779 km' },
-      // Add more planets as needed
+      // Add more posts as needed
     ],
   };
 },
@@ -69,48 +69,48 @@ data() {
 
 ```vue
 <template>
-  <div class="planets-list" v-if="planets.length">
-    <PlanetItem
-      v-for="(item, key) in planets"
+  <div class="posts-list" v-if="posts.length">
+    <PostItem
+      v-for="(item, key) in posts"
       :key="key"
-      v-bind:planet="item"
+      v-bind:post="item"
     />
   </div>
   <div v-else>Loading...</div>
 </template>
 ```
 
-- **Conditional Rendering:** If there are planets in the `planets` array, the planets are displayed using the `PlanetItem` component. Otherwise, a loading message is displayed.
+- **Conditional Rendering:** If there are posts in the `posts` array, the posts are displayed using the `PostItem` component. Otherwise, a loading message is displayed.
 
 ### Script
 
 ```vue
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import PlanetItem from "./PlanetItem.vue";
-import { Planet } from "@/types/Planet";
+import PostItem from "./PostItem.vue";
+import { Post } from "@/types/Post";
 
 
 @Component({
   components: {
-    PlanetItem,
+    PostItem,
   },
 })
-export default class PlanetList extends Vue {
-  @Prop({ required: true }) planets!: Planet[];
+export default class PostsList extends Vue {
+  @Prop({ required: true }) posts!: Post[];
 }
 </script>
 ```
 
-- **Import Statements:** Import necessary dependencies and the `PlanetItem` component.
-- **Component Registration:** Register the `PlanetItem` component.
-- **Prop:** Define a prop named `planets` of type Array, marked as required.
+- **Import Statements:** Import necessary dependencies and the `PostItem` component.
+- **Component Registration:** Register the `PostItem` component.
+- **Prop:** Define a prop named `posts` of type Array, marked as required.
 
 ### Style
 
 ```vue
 <style lang="scss" scoped>
-.planets-list {
+.posts-list {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
@@ -118,8 +118,8 @@ export default class PlanetList extends Vue {
 </style>
 ```
 
-- **Grid Layout:** Planets are displayed in a grid layout with four columns and a 10-pixel gap between them.
+- **Grid Layout:** Posts are displayed in a grid layout with four columns and a 10-pixel gap between them.
 
 ## Conclusion
 
-The `PlanetList` component provides a flexible and responsive way to display a list of planets in a grid layout. It enhances reusability by utilizing the `PlanetItem` component for rendering individual planet details.
+The `PostsList` component provides a flexible and responsive way to display a list of posts in a grid layout. It enhances reusability by utilizing the `PostItem` component for rendering individual post details.
