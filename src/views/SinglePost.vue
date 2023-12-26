@@ -23,14 +23,13 @@
 </template>
 
 <script lang="ts">
-import PostItem from "@/components/PostItem.vue";
 import { Vue, Component } from "vue-property-decorator";
 import { Post } from "@/types/Post";
 import { mapGetters } from "vuex";
 
 @Component({
   components: {
-    PostItem,
+    PostItem: () => import("@/components/PostItem.vue"),
   },
   computed: {
     ...mapGetters(["posts"]),

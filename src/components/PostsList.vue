@@ -10,12 +10,11 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import PostItem from "./PostItem.vue";
 import { Post } from "@/types/Post";
 
 @Component({
   components: {
-    PostItem,
+    PostItem: () => import("@/components/PostItem.vue"),
   },
 })
 export default class PostsList extends Vue {

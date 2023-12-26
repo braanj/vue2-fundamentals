@@ -23,15 +23,13 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from "vue-property-decorator";
-import PageSectionContainer from "@/components/PageSectionContainer.vue";
-import PostsList from "@/components/PostsList.vue";
 import { Post } from "@/types/Post";
 import { mapGetters } from "vuex";
 
 @Component({
   components: {
-    PageSectionContainer,
-    PostsList,
+    PageSectionContainer: () => import("@/components/PageSectionContainer.vue"),
+    PostsList: () => import("@/components/PostsList.vue"),
     LocalSearch: () => import("../components/LocalSearch.vue"),
   },
   computed: {
