@@ -22,7 +22,7 @@ import { Vue, Component } from "vue-property-decorator";
     NavBar: () => import("./components/NavBar.vue"),
   },
 })
-export default class SinglePost extends Vue {}
+export default class App extends Vue {}
 </script>
 
 <style lang="scss">

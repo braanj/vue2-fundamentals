@@ -11,7 +11,10 @@
 
     <div class="navigation">
       <button v-if="postIndex >= 1" @click="navigateTo(-1)">Prev</button>
-      <button v-if="postIndex < posts.length - 1" @click="navigateTo(1)">
+      <button
+        v-if="postIndex < displayedPosts.length - 1"
+        @click="navigateTo(1)"
+      >
         Next
       </button>
     </div>
@@ -23,10 +26,14 @@
 import PostItem from "@/components/PostItem.vue";
 import { Vue, Component } from "vue-property-decorator";
 import { Post } from "@/types/Post";
+import { mapGetters } from "vuex";
 
 @Component({
   components: {
     PostItem,
+  },
+  computed: {
+    ...mapGetters(["posts"]),
   },
 })
 export default class SinglePost extends Vue {
@@ -38,6 +45,7 @@ export default class SinglePost extends Vue {
   // The object representing the post's details.
   post!: Post;
   posts!: Post[];
+  displayedPosts!: Post[];
 
   postIndex!: number;
 
@@ -64,14 +72,11 @@ export default class SinglePost extends Vue {
   async mounted() {
     this.slug = this.$route.params.slug;
 
-    // Dynamically import the route handler from the dataLayer.
-    const { handler } = await import("../dataLayer/route");
+    // Get posts from the store
+    this.displayedPosts = await this.posts;
 
-    // Fetch the post's details based on the provided slug.
-    this.posts = await handler(`/posts`);
-
-    if (this.posts.length) {
-      const postTmp = this.posts.find(
+    if (this.displayedPosts.length) {
+      const postTmp = this.displayedPosts.find(
         (post: Post) => post.id.toString() === this.slug
       );
 
@@ -79,7 +84,7 @@ export default class SinglePost extends Vue {
         this.post = postTmp;
       }
 
-      this.postIndex = this.posts.indexOf(this.post);
+      this.postIndex = this.displayedPosts.indexOf(this.post);
 
       // Update the loading flag to indicate that data has been loaded.
       this.loading = false;

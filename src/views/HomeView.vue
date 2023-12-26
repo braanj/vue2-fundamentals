@@ -10,11 +10,12 @@
     </page-section-container>
 
     <!-- Second page section container for displaying a list of posts -->
-    <PageSectionContainer>
+    <PageSectionContainer v-if="!loading">
       <h2>Posts</h2>
-      <PostsList :posts="posts" />
+      <PostsList :posts="displayedPosts" />
       <router-link class="button-more" to="/posts">Discover more</router-link>
     </PageSectionContainer>
+    <div v-else>loading...</div>
   </div>
 </template>
 
@@ -23,16 +24,22 @@ import { Vue, Component } from "vue-property-decorator";
 import PageSectionContainer from "@/components/PageSectionContainer.vue";
 import PostsList from "@/components/PostsList.vue";
 import { Post } from "@/types/Post";
+import { mapGetters } from "vuex";
 
 @Component({
   components: {
     PageSectionContainer,
     PostsList,
   },
+  computed: {
+    ...mapGetters(["posts"]),
+  },
 })
 export default class HomeView extends Vue {
   // Array to store the list of posts
-  posts: Post[] = [];
+  displayedPosts: Post[] = [];
+  posts!: any;
+  loading = true;
 
   // Title for the home page
   pageTitle = "Page title";
@@ -50,8 +57,12 @@ export default class HomeView extends Vue {
     // Dynamically import the route handler from the dataLayer.
     const { handler } = await import("../dataLayer/route");
 
+    const allPosts = await handler("/posts");
+    this.$store.dispatch("setPosts", allPosts);
+
     // Fetch the list of posts from the dataLayer.
-    this.posts = (await handler("/posts")).slice(0, 4);
+    this.displayedPosts = await this.posts.slice(0, 4);
+    this.loading = false;
   }
 }
 </script>

@@ -16,7 +16,7 @@
 
     <!-- Second page section container for displaying a list of posts -->
     <PageSectionContainer>
-      <PostsList :posts="posts" />
+      <PostsList :posts="displayedPosts" />
     </PageSectionContainer>
   </div>
 </template>
@@ -26,6 +26,7 @@ import { Vue, Component, Watch } from "vue-property-decorator";
 import PageSectionContainer from "@/components/PageSectionContainer.vue";
 import PostsList from "@/components/PostsList.vue";
 import { Post } from "@/types/Post";
+import { mapGetters } from "vuex";
 
 @Component({
   components: {
@@ -33,10 +34,15 @@ import { Post } from "@/types/Post";
     PostsList,
     LocalSearch: () => import("../components/LocalSearch.vue"),
   },
+  computed: {
+    ...mapGetters(["posts"]),
+  },
 })
 export default class HomeView extends Vue {
   // Array to store the list of posts
-  posts: Post[] = [];
+  posts!: Post[];
+
+  displayedPosts: Post[] = [];
 
   query = "";
 
@@ -54,25 +60,18 @@ export default class HomeView extends Vue {
    */
   @Watch("query")
   async search() {
-    const { handler } = await import("../dataLayer/route");
-
-    this.posts = (await handler("/posts")).filter((post: Post) => {
+    this.displayedPosts = await this.posts.filter((post: Post) => {
       return post.title.includes(this.query) || post.body.includes(this.query);
     });
   }
 
   async mounted() {
-    // Dynamically import the route handler from the dataLayer.
-    const { handler } = await import("../dataLayer/route");
-
-    // Fetch the list of posts from the dataLayer.
-    this.posts = await handler("/posts");
-
+    this.displayedPosts = await this.posts;
     let routeQuery = this.$route?.query;
 
     if (routeQuery.q) {
       const q = (routeQuery.q as string).replaceAll("-", " ");
-      this.posts = this.posts.filter((post: Post) => {
+      this.displayedPosts = await this.displayedPosts.filter((post: Post) => {
         return post.title.includes(q) || post.body.includes(q);
       });
     }
