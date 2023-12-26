@@ -21,15 +21,13 @@
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import PageSectionContainer from "@/components/PageSectionContainer.vue";
-import PostsList from "@/components/PostsList.vue";
 import { Post } from "@/types/Post";
 import { mapGetters } from "vuex";
 
 @Component({
   components: {
-    PageSectionContainer,
-    PostsList,
+    PageSectionContainer: () => import("@/components/PageSectionContainer.vue"),
+    PostsList: () => import("@/components/PostsList.vue"),
   },
   computed: {
     ...mapGetters(["posts"]),
